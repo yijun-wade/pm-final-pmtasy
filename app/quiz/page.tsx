@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { motion } from "framer-motion";
 
 // 10개 진단 문항 배열
@@ -82,22 +82,21 @@ export default function QuizPage() {
     return total + scoreForQuestion(questions[index], answer);
   }, 0);
 
-  // 레벨 계산
+  // 레벨 계산 (예시: 0~40점은 레벨 1, 41~60점은 레벨 2, 등)
   const getLevel = (score: number) => {
-    if (score <= 40) return 'Lv.1 초보 PM';
-    if (score <= 60) return 'Lv.2 중급 PM';
-    if (score <= 70) return 'Lv.3 숙련 PM';
-    if (score <= 90) return 'Lv.4 고급 PM';
-    return 'Lv.5 전설의 PM';
+    if (score <= 40) return 'Lv.1 초보 PM';  // 0~40점
+    if (score <= 60) return 'Lv.2 중급 PM';  // 41~60점
+    if (score <= 70) return 'Lv.3 숙련 PM';  // 61~70점
+    if (score <= 90) return 'Lv.4 고급 PM';  // 71~90점
+    return 'Lv.5 전설의 PM';  // 91~100점
   };
 
   // 결과 화면에서 표시할 레벨
   const level = getLevel(totalScore);
 
-  // 기존 상태 처리 방식 수정
-  const handleAnswerChange = (value: string) => {
+  const handleAnswerChange = (option: string) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = value;
+    newAnswers[currentQuestionIndex] = option;
     setAnswers(newAnswers);
   };
 
