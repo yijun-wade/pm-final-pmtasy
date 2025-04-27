@@ -4,8 +4,6 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-
-
 // 10개 진단 문항 배열
 const questions = [
   {
@@ -84,21 +82,22 @@ export default function QuizPage() {
     return total + scoreForQuestion(questions[index], answer);
   }, 0);
 
-  // 레벨 계산 (예시: 0~40점은 레벨 1, 41~60점은 레벨 2, 등)
+  // 레벨 계산
   const getLevel = (score: number) => {
-    if (score <= 40) return 'Lv.1 초보 PM';  // 0~40점
-    if (score <= 60) return 'Lv.2 중급 PM';  // 41~60점
-    if (score <= 70) return 'Lv.3 숙련 PM';  // 61~70점
-    if (score <= 90) return 'Lv.4 고급 PM';  // 71~90점
-    return 'Lv.5 전설의 PM';  // 91~100점
+    if (score <= 40) return 'Lv.1 초보 PM';
+    if (score <= 60) return 'Lv.2 중급 PM';
+    if (score <= 70) return 'Lv.3 숙련 PM';
+    if (score <= 90) return 'Lv.4 고급 PM';
+    return 'Lv.5 전설의 PM';
   };
 
   // 결과 화면에서 표시할 레벨
   const level = getLevel(totalScore);
 
-  const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  // 기존 상태 처리 방식 수정
+  const handleAnswerChange = (value: string) => {
     const newAnswers = [...answers];
-    newAnswers[index] = event.target.value;
+    newAnswers[currentQuestionIndex] = value;
     setAnswers(newAnswers);
   };
 
@@ -120,23 +119,22 @@ export default function QuizPage() {
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '16px' }}>
             {questions[currentQuestionIndex].options.map((option, idx) => (
               <div
-                key={idx}
-                onClick={() => handleAnswerChange({ target: { value: option } } as React.ChangeEvent<HTMLInputElement>, currentQuestionIndex)}
-                style={{
-                  marginBottom: '10px',
-                  backgroundColor: '#1f2937',
-                  borderRadius: '8px',
-                  padding: '10px 20px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s ease',
-                  backgroundColor: answers[currentQuestionIndex] === option ? '#facc15' : '#1f2937',
-                }}
-              >
-                <label htmlFor={option} style={{ fontSize: '18px', color: '#f0f6fc' }}>
-                  {option}
-                </label>
-              </div>
+              key={idx}
+              onClick={() => handleAnswerChange(option)} // value 전달
+              style={{
+                marginBottom: '10px',
+                backgroundColor: answers[currentQuestionIndex] === option ? '#facc15' : '#1f2937', // 조건에 따른 배경색 변경
+                borderRadius: '8px',
+                padding: '10px 20px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease', // 애니메이션 효과
+              }}
+            >
+              <label htmlFor={option} style={{ fontSize: '18px', color: '#f0f6fc' }}>
+                {option}
+              </label>
+            </div>
             ))}
           </div>
         </div>
