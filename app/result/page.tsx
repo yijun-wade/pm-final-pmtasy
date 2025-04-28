@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from "react";
+import { Suspense } from "react"; // Suspense 추가
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState } from "react";
