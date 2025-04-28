@@ -1,8 +1,9 @@
 'use client';
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { useState, Suspense } from "react";
+import { useState } from "react";
 
 // ✅ 퀘스트 배열
 const quests = [
@@ -94,210 +95,212 @@ export default function ResultPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#0d1117', color: '#fff' }}>
-      {/* XP Progress Bar - sticky */}
-      <div style={{
-        position: 'sticky',
-        top: 0,
-        backgroundColor: '#0d1117',
-        zIndex: 50,
-        padding: '10px',
-      }}>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#0d1117', color: '#fff' }}>
+        {/* XP Progress Bar - sticky */}
         <div style={{
-          width: '90%',
-          maxWidth: '600px',
-          margin: '0 auto',
-          backgroundColor: '#374151',
-          borderRadius: '10px',
-          overflow: 'hidden',
+          position: 'sticky',
+          top: 0,
+          backgroundColor: '#0d1117',
+          zIndex: 50,
+          padding: '10px',
         }}>
           <div style={{
-            width: `${Math.min(xp, 100)}%`,
-            backgroundColor: '#facc15',
-            height: '12px',
-            transition: 'width 0.5s ease'
-          }} />
-        </div>
-        <p style={{ textAlign: 'center', marginTop: '6px', fontSize: '14px', color: '#d1d5db' }}>
-          경험치: {xp} / 100 XP
-        </p>
-      </div>
-
-      {/* 본문 */}
-      <div style={{ padding: '40px 20px' }}>
-        {/* 레벨 결과 카드 */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            backgroundColor: '#161b22',
-            padding: '30px',
-            borderRadius: '20px',
-            textAlign: 'center',
             width: '90%',
-            maxWidth: '500px',
+            maxWidth: '600px',
             margin: '0 auto',
-            marginBottom: '40px',
-          }}
-        >
-          <h1 style={{ fontSize: '36px', marginBottom: '16px' }}>{levelName}</h1>
-          <h2 style={{ fontSize: '18px', marginBottom: '16px', color: '#d1d5db' }}>{message}</h2>
-          <p style={{ color: '#6b7280' }}>당신의 평균 점수: {finalAverage.toFixed(2)}점</p>
-        </motion.div>
+            backgroundColor: '#374151',
+            borderRadius: '10px',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              width: `${Math.min(xp, 100)}%`,
+              backgroundColor: '#facc15',
+              height: '12px',
+              transition: 'width 0.5s ease'
+            }} />
+          </div>
+          <p style={{ textAlign: 'center', marginTop: '6px', fontSize: '14px', color: '#d1d5db' }}>
+            경험치: {xp} / 100 XP
+          </p>
+        </div>
 
-        {/* 뱃지 */}
-        {badge && (
+        {/* 본문 */}
+        <div style={{ padding: '40px 20px' }}>
+          {/* 레벨 결과 카드 */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             style={{
-              margin: '20px auto',
-              padding: '16px 24px',
-              backgroundColor: '#facc15',
-              color: '#1f2937',
-              borderRadius: '16px',
-              width: 'fit-content',
-              fontWeight: 'bold',
-              fontSize: '20px',
+              backgroundColor: '#161b22',
+              padding: '30px',
+              borderRadius: '20px',
+              textAlign: 'center',
+              width: '90%',
+              maxWidth: '500px',
+              margin: '0 auto',
+              marginBottom: '40px',
             }}
           >
-            {badge}
+            <h1 style={{ fontSize: '36px', marginBottom: '16px' }}>{levelName}</h1>
+            <h2 style={{ fontSize: '18px', marginBottom: '16px', color: '#d1d5db' }}>{message}</h2>
+            <p style={{ color: '#6b7280' }}>당신의 평균 점수: {finalAverage.toFixed(2)}점</p>
           </motion.div>
-        )}
 
-        {/* 결과 공유 버튼 */}
-        <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <button
-            onClick={handleShare}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#facc15',
-              color: '#1f2937',
-              border: 'none',
-              borderRadius: '10px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-          >
-            결과 공유하기
-          </button>
-        </div>
+          {/* 뱃지 */}
+          {badge && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                margin: '20px auto',
+                padding: '16px 24px',
+                backgroundColor: '#facc15',
+                color: '#1f2937',
+                borderRadius: '16px',
+                width: 'fit-content',
+                fontWeight: 'bold',
+                fontSize: '20px',
+              }}
+            >
+              {badge}
+            </motion.div>
+          )}
 
-        {/* 레벨업 미션 제목 */}
-        <div style={{ textAlign: 'center', margin: '40px 0' }}>
-          <h2 style={{ fontSize: '24px', color: '#facc15', fontWeight: 'bold' }}>
-            🚀 레벨업 미션을 시작하세요!
-          </h2>
-        </div>
+          {/* 결과 공유 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <button
+              onClick={handleShare}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#facc15',
+                color: '#1f2937',
+                border: 'none',
+                borderRadius: '10px',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                cursor: 'pointer',
+              }}
+            >
+              결과 공유하기
+            </button>
+          </div>
 
-        {/* 퀘스트 3열 그리드 */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-          gap: '20px',
-        }}>
-          {quests.map((quest, index) => {
-            const isCoffeeChat = quest.title.includes("커피챗");
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                style={{
-                  backgroundColor: isCoffeeChat ? '#fde68a' : completed[index] ? '#374151' : '#2d333b',
-                  padding: '20px',
-                  borderRadius: '12px',
-                  boxShadow: isCoffeeChat
-                    ? '0 0 20px #facc15'
-                    : '0 4px 8px rgba(0,0,0,0.3)',
-                  color: isCoffeeChat ? '#1f2937' : '#f0f6fc',
-                }}
-              >
-                <h3 style={{ fontSize: '18px', marginBottom: '10px' }}>{quest.emoji} {quest.title}</h3>
-                <p style={{ marginBottom: '10px', color: isCoffeeChat ? '#374151' : '#d1d5db' }}>{quest.description}</p>
-                {isCoffeeChat ? (
-                  <a
-                    href="https://forms.gle/T81nVJPfXgpSMzoW7"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-block',
-                      padding: '8px 12px',
-                      backgroundColor: '#facc15',
-                      color: '#1f2937',
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontWeight: 'bold',
-                      textDecoration: 'none',
-                      marginTop: '10px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    미션 해볼게요
-                  </a>
-                ) : (
-                  completed[index] ? (
-                    <button
+          {/* 레벨업 미션 제목 */}
+          <div style={{ textAlign: 'center', margin: '40px 0' }}>
+            <h2 style={{ fontSize: '24px', color: '#facc15', fontWeight: 'bold' }}>
+              🚀 레벨업 미션을 시작하세요!
+            </h2>
+          </div>
+
+          {/* 퀘스트 3열 그리드 */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+            gap: '20px',
+          }}>
+            {quests.map((quest, index) => {
+              const isCoffeeChat = quest.title.includes("커피챗");
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  style={{
+                    backgroundColor: isCoffeeChat ? '#fde68a' : completed[index] ? '#374151' : '#2d333b',
+                    padding: '20px',
+                    borderRadius: '12px',
+                    boxShadow: isCoffeeChat
+                      ? '0 0 20px #facc15'
+                      : '0 4px 8px rgba(0,0,0,0.3)',
+                    color: isCoffeeChat ? '#1f2937' : '#f0f6fc',
+                  }}
+                >
+                  <h3 style={{ fontSize: '18px', marginBottom: '10px' }}>{quest.emoji} {quest.title}</h3>
+                  <p style={{ marginBottom: '10px', color: isCoffeeChat ? '#374151' : '#d1d5db' }}>{quest.description}</p>
+                  {isCoffeeChat ? (
+                    <a
+                      href="https://forms.gle/T81nVJPfXgpSMzoW7"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{
-                        padding: '8px 12px',
-                        backgroundColor: '#9ca3af',
-                        color: '#1f2937',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontWeight: 'bold',
-                        cursor: 'not-allowed',
-                        marginTop: '10px'
-                      }}
-                      disabled
-                    >
-                      완료됨
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleComplete(index)}
-                      style={{
+                        display: 'inline-block',
                         padding: '8px 12px',
                         backgroundColor: '#facc15',
                         color: '#1f2937',
                         border: 'none',
                         borderRadius: '8px',
                         fontWeight: 'bold',
+                        textDecoration: 'none',
+                        marginTop: '10px',
                         cursor: 'pointer',
-                        marginTop: '10px'
                       }}
                     >
-                      미션 해볼게요 (+{quest.xp}xp)
-                    </button>
-                  )
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
-        
-        {/* 다시 퀴즈풀기 버튼 */}
-        <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <button
-            onClick={handleRestartQuiz}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4caf50',  // 다른 색상으로 변경
-              color: '#fff',
-              border: 'none',
-              borderRadius: '10px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-          >
-            다시 퀴즈 풀기
-          </button>
+                      미션 해볼게요
+                    </a>
+                  ) : (
+                    completed[index] ? (
+                      <button
+                        style={{
+                          padding: '8px 12px',
+                          backgroundColor: '#9ca3af',
+                          color: '#1f2937',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontWeight: 'bold',
+                          cursor: 'not-allowed',
+                          marginTop: '10px'
+                        }}
+                        disabled
+                      >
+                        완료됨
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleComplete(index)}
+                        style={{
+                          padding: '8px 12px',
+                          backgroundColor: '#facc15',
+                          color: '#1f2937',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontWeight: 'bold',
+                          cursor: 'pointer',
+                          marginTop: '10px'
+                        }}
+                      >
+                        미션 해볼게요 (+{quest.xp}xp)
+                      </button>
+                    )
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+          
+          {/* 다시 퀴즈풀기 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <button
+              onClick={handleRestartQuiz}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#4caf50',  // 다른 색상으로 변경
+                color: '#fff',
+                border: 'none',
+                borderRadius: '10px',
+                fontWeight: 'bold',
+                fontSize: '16px',
+                cursor: 'pointer',
+              }}
+            >
+              다시 퀴즈 풀기
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
