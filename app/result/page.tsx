@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
 // ✅ 퀘스트 배열
 const quests = [
