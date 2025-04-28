@@ -1,9 +1,8 @@
 'use client';
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from 'react'; // useEffect 추가
+import { Suspense } from 'react'; // Suspense 추가
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 // ✅ 퀘스트 배열
 const quests = [
@@ -20,11 +19,22 @@ const quests = [
 ];
 
 export default function ResultPage() {
-  const searchParams = useSearchParams();
-  const answerString = searchParams.get("answers");
-
+  const [searchParams, setSearchParams] = useState<URLSearchParams | null>(null); // 초기값 null로 설정
   const [completed, setCompleted] = useState(Array(quests.length).fill(false));
   const [xp, setXp] = useState(0);
+
+  // 클라이언트에서만 실행되도록 useEffect 사용
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setSearchParams(params);  // URL 파라미터 처리
+  }, []); // 빈 배열을 주면 컴포넌트가 처음 렌더링될 때만 실행됨
+
+  // searchParams가 아직 로드되지 않으면 로딩 표시
+  if (!searchParams) {
+    return <div>Loading...</div>;
+  }
+
+  const answerString = searchParams.get("answers");
 
   const handleComplete = (index: number) => {
     const newCompleted = [...completed];
