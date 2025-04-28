@@ -1,8 +1,8 @@
 'use client';
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
 
 // 10개 진단 문항 배열
 const questions = [
@@ -96,7 +96,7 @@ export default function QuizPage() {
 
   const handleAnswerChange = (option: string) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = option;
+    newAnswers[currentQuestionIndex] = option; // 여기서 수정
     setAnswers(newAnswers);
   };
 
